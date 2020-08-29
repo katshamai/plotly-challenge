@@ -68,19 +68,24 @@ d3.json("samples.json").then((incomingData) => {
 //}
 
 // Create function to gather metadata for each individual
-function indivInfo(id) {
+//function indivInfo(id) {
     d3.json("samples.json").then((incomingData) => {
         var metadata = incomingData.metadata;
         console.log(metadata);
-
-        // clear demographic info panel before new info is updated
-        demoInfo.html("");
 
         // filter for specified id
         var result = metadata.filter(row => row.id.toString() === id)[0];
 
         // display to demographic info panel
         var demoInfo = d3.select("#sample-metadata");
+        
+        // clear demographic info panel before new info is updated
+        demoInfo.html("");
+
+        // map demographic info to id
+        Object.entries(result).forEach((key) => {   
+            demoInfo.append("h5").text(key[0].toUpperCase() + ": " + key[1] + "\n");    
+        });
 
     })
-}
+//}
