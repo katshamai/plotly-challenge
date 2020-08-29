@@ -29,19 +29,18 @@ d3.json("samples.json").then((incomingData) => {
         text: top10labels,
         type:"bar",
         orientation: "h",
+        marker:{
+            color: sampleResult.otu_ids
+        }
     };
     // Create data variable
     var data = [trace1];
 
     // create layout
     var layout = {
-        title: "Top 10 OTU",
-        margin: {
-                l: 100,
-                r: 100,
-                t: 100,
-                b: 30
-        },
+        title: "<b>Top 10 OTU</b>",
+        height: 500,
+        width: 500,
         }
 
      // Create the bar plot
@@ -62,11 +61,11 @@ d3.json("samples.json").then((incomingData) => {
     var data2 = [trace2];
     
     var layout2 = {
-        title: 'Marker Size',
+        title: '<b>OTU represented in a bubble chart</b>',
         showlegend: false,
         height: 600,
-        width: 1000
-    };
+        width: 1100,
+     };
     
     Plotly.newPlot("bubble", data2, layout2);
     });
@@ -90,7 +89,7 @@ function indivInfo(id) {
 
         // Map demographic info to id
         Object.entries(result).forEach((key) => {   
-            demoInfo.append("h5").text(key[0] + ": " + key[1] + "\n");    
+            demoInfo.append("body").text(key[0] + ": " + key[1] + "\n");    
         });
     });
 }
@@ -113,32 +112,33 @@ function gaugeInfo(id) {
         var data = [
             {
               type: "indicator",
-              mode: "gauge+number+delta",
+              mode: "gauge+number",
               value: wfreqData,
-              title: { text: "Belly Button Washing Frequency", font: { size: 24 } },
+              title: { text: "<b>Belly Button Washing Frequency</b>", font: { size: 16 } },
               gauge: {
-                axis: { range: [null, 9], tickwidth: 1, tickcolor: "red" },
+                axis: { range: [null, 9], tickwidth: 1, tickcolor: "black" },
                 bgcolor: "white",
+                bar: { color: "#008080" },
                 borderwidth: 2,
                 bordercolor: "gray",
                 steps: [
-                  { range: [0, 1], text: "0-1", color: "white" },
-                  { range: [1, 2], text: "1-2", color: "cream" },
-                  { range: [2, 3], text: "1-2", color: "beige" },
-                  { range: [3, 4], text: "1-2", color: "coffee" },
-                  { range: [4, 5], text: "1-2", color: "mustard" },
-                  { range: [5, 6], text: "1-2", color: "light green" },
-                  { range: [6, 7], text: "1-2", color: "green" },
-                  { range: [7, 8], text: "1-2", color: "forest green" },
-                  { range: [8, 9], text: "1-2", color: "dark green" },
+                  { range: [0, 1], text: "0-1", textinfo: 'text', textposition: 'inside', color: "#FFFFE0"},
+                  { range: [1, 2], text: "1-2", color: "#FFFACD" },
+                  { range: [2, 3], text: "2-3", color: "#FAFAD2" },
+                  { range: [3, 4], text: "3-4", color: "#FFEFD5" },
+                  { range: [4, 5], text: "4-5", color: "#FFE4B5" },
+                  { range: [5, 6], text: "5-6", color: "#FFDAB9" },
+                  { range: [6, 7], text: "6-7", color: "#EEE8AA" },
+                  { range: [7, 8], text: "7-8", color: "#F0E68C" },
+                  { range: [8, 9], text: "8-9", color: "#BDB76B" },
                 ],
               }
             }
           ];
           
           var layout = {
-            width: 500,
-            height: 400,
+            width: 350,
+            height: 300,
             margin: { t: 25, r: 25, l: 25, b: 25 },
             font: { color: "black", family: "Arial" }
           };
