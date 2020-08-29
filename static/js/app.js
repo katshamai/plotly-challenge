@@ -114,13 +114,7 @@ function gaugeInfo(id) {
               type: "indicator",
               mode: "gauge+number",
               value: wfreqData,
-              title: { text: "<b>Belly Button Washing Frequency</b>", font: { size: 16 } },
-              annotations: [{
-                text: "Washes per Week",
-                  font: {
-                  size: 10,
-                  color: 'black',
-                },
+              title: { text: "<b>Belly Button Washing Frequency</b> <br> Washing(s) per Week </br>", font: { size: 16 } },
               gauge: {
                 axis: { range: [null, 9], tickwidth: 1, tickcolor: "black" },
                 bgcolor: "white",
@@ -146,7 +140,13 @@ function gaugeInfo(id) {
             width: 350,
             height: 300,
             margin: { t: 25, r: 25, l: 25, b: 25 },
-            font: { color: "black", family: "Arial" }
+            font: { color: "black", family: "Arial" },
+            annotation: [{
+              text: "Washes per Week",
+                font: {
+                size: 10,
+                color: 'black'},
+              }],
           };
           
         // Create plot
