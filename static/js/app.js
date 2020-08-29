@@ -115,6 +115,12 @@ function gaugeInfo(id) {
               mode: "gauge+number",
               value: wfreqData,
               title: { text: "<b>Belly Button Washing Frequency</b>", font: { size: 16 } },
+              annotations: [{
+                text: "Washes per Week",
+                  font: {
+                  size: 10,
+                  color: 'black',
+                },
               gauge: {
                 axis: { range: [null, 9], tickwidth: 1, tickcolor: "black" },
                 bgcolor: "white",
