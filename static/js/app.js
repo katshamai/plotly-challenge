@@ -1,21 +1,26 @@
 // Create a horizontal bar chart using sample_values, otu_ids, otu_labels
 // Read in data from sample.json
-
-//function getData(id) {
+function getData(id) {
 d3.json("samples.json").then((incomingData) => {
-    console.log(incomingData);
+    // console.log(incomingData);
 
-// For each individual, sort Sample Values in descending order
-    var otuID = incomingData.samples[0].otu_ids;
-    console.log(otuID);
-    var top10Samples = incomingData.samples[0].sample_values.slice(0,10).reverse();
-    console.log(top10Samples);
-    var top10labels = incomingData.samples[0].otu_labels.slice(0,10).reverse();
-    console.log(top10labels);
+    var samplesData = incomingData.samples;
+    // console.log(samplesData);
+
+    // Filter for specified id
+    var sampleResult = samplesData.filter(row => row.id.toString() === id)[0];
+
+    // For each individual, sort Sample Values in descending order
+    var otuID = sampleResult.otu_ids;
+    // console.log(otuID);
+    var top10Samples = sampleResult.sample_values.slice(0,10).reverse();
+    // console.log(top10Samples);
+    var top10labels = sampleResult.otu_labels.slice(0,10).reverse();
+    // console.log(top10labels);
     var top10ID = otuID.slice(0,10).reverse();
-    console.log(top10ID);
+    // console.log(top10ID);
     var OTU_id = top10ID.map(d => "OTU " + d);
-        console.log(`OTU IDS: ${OTU_id}`)
+        // console.log(`OTU IDS: ${OTU_id}`)
 
     // Create plot
     var trace1 = {
@@ -25,7 +30,7 @@ d3.json("samples.json").then((incomingData) => {
         type:"bar",
         orientation: "h",
     };
-    // create data variable
+    // Create data variable
     var data = [trace1];
 
     // create layout
@@ -39,19 +44,19 @@ d3.json("samples.json").then((incomingData) => {
         },
         }
 
-     // create the bar plot
+     // Create the bar plot
      Plotly.newPlot("bar", data, layout);
 
-    // Create a bubble chart for each sample
+    // Create a bubble chart 
     var trace2 = {
-        x: incomingData.samples[0].otu_ids,
-        y: incomingData.samples[0].sample_values,
+        x: sampleResult.otu_ids,
+        y: sampleResult.sample_values,
         mode: 'markers',
         marker: {
-        size: incomingData.samples[0].sample_values,
-        color: incomingData.samples[0].otu_ids
+        size: sampleResult.sample_values,
+        color: sampleResult.otu_ids
         },
-        text: incomingData.samples[0].otu_labels,
+        text: sampleResult.otu_labels,
     };
     
     var data2 = [trace2];
@@ -63,29 +68,61 @@ d3.json("samples.json").then((incomingData) => {
         width: 1000
     };
     
-    Plotly.newPlot('bubble', data2, layout2);
+    Plotly.newPlot("bubble", data2, layout2);
     });
-//}
+
+  }
 
 // Create function to gather metadata for each individual
-//function indivInfo(id) {
+function indivInfo(id) {
     d3.json("samples.json").then((incomingData) => {
         var metadata = incomingData.metadata;
-        console.log(metadata);
+        // console.log(metadata);
 
-        // filter for specified id
+        // Filter for specified id
         var result = metadata.filter(row => row.id.toString() === id)[0];
 
-        // display to demographic info panel
+        // Display to demographic info panel
         var demoInfo = d3.select("#sample-metadata");
         
-        // clear demographic info panel before new info is updated
+        // Clear demographic info panel before new info is updated
         demoInfo.html("");
 
-        // map demographic info to id
+        // Map demographic info to id
         Object.entries(result).forEach((key) => {   
-            demoInfo.append("h5").text(key[0].toUpperCase() + ": " + key[1] + "\n");    
+            demoInfo.append("h5").text(key[0] + ": " + key[1] + "\n");    
+        });
+    });
+}
+
+// Create function for default data
+function init() {
+
+    // Link to drop down menu
+    var dropDownMenu = d3.select("#selDataset");
+    // read the data 
+    d3.json("samples.json").then((data)=> {
+        // console.log(data)
+
+        // Populate ID data into drop down menu
+        data.names.forEach(function(name) {
+            dropDownMenu.append("option").text(name).property("value");
         });
 
-    })
-//}
+        // call the functions to display the data and the plots to the page
+        var id = d3.select("#selDataset").node().value;
+        console.log(id);
+      
+        // Build the plot with the new stock
+        getData(id);
+        indivInfo(id);
+    });
+}
+
+// Create change event trigger
+function optionChanged(id) {
+    getData(id);
+    indivInfo(id);
+}
+
+init();
